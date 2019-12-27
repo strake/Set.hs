@@ -1,6 +1,6 @@
 cabal-version:       3.0
 name:                Set
-version:             0.0.1.0
+version:             0.0.2.0
 synopsis:            See README for more info
 description:         See README for more info
 homepage:            https://github.com/strake/Set.hs
