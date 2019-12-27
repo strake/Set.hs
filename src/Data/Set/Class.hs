@@ -21,6 +21,7 @@ class Set set where
     foldl :: (a -> Elem set -> a) -> a -> set -> a
     toList :: set -> [Elem set]
     length :: set -> Int
+    size :: set -> Int
     null :: set -> Bool
     mapMaybe :: (Elem set -> Maybe (Elem set)) -> set -> set
     mapEither :: (Elem set -> Either (Elem set) (Elem set)) -> set -> (set, set)
@@ -38,7 +39,8 @@ class Set set where
     foldl f z = flip appEndo z . getDual . foldMap (Dual . Endo . flip f)
     toList = foldr (:) []
     length = F.length . toList
-    null = (==) 0 . length
+    size = F.length . toList
+    null = (==) 0 . size
     fromList = F.foldr insert empty
     member = (⊆) . singleton
     (⊆) = null ∘∘ difference
@@ -49,6 +51,7 @@ class Set set where
     mapMaybe f = fromList . List.mapMaybe f . toList
     mapEither f = (,) <$> mapMaybe (either Just (pure Nothing) . f) <*> mapMaybe (either (pure Nothing) Just . f)
     filter p = mapMaybe ((<$) <*> guard . p)
+{-# DEPRECATED length "use `size`" #-}
 
 instance Ord a => Set (C.Set a) where
     type Elem (C.Set a) = a
@@ -59,6 +62,7 @@ instance Ord a => Set (C.Set a) where
     foldl = C.foldl
     toList = C.toList
     length = C.size
+    size = C.size
     null = C.null
     mapMaybe f = C.fromAscList . List.catMaybes . C.toAscList . C.map f
     filter = C.filter
@@ -79,6 +83,7 @@ instance Set I.IntSet where
     foldl = I.foldl
     toList = I.toList
     length = I.size
+    size = I.size
     null = I.null
     filter = I.filter
     member = I.member
