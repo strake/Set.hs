@@ -9,6 +9,7 @@ import Data.Function (on)
 import qualified Data.Maybe as List (catMaybes, mapMaybe)
 import Data.Monoid
 import qualified Data.Set as C
+import qualified Data.IntSet as I
 import Util
 
 class Set set where
@@ -70,3 +71,22 @@ instance Ord a => Set (C.Set a) where
     intersection = C.intersection
     difference = C.difference
     (⊆) = C.isSubsetOf
+
+instance Set I.IntSet where
+    type Elem I.IntSet = Int
+    empty = I.empty
+    foldr = I.foldr
+    foldl = I.foldl
+    toList = I.toList
+    length = I.size
+    null = I.null
+    filter = I.filter
+    member = I.member
+    fromList = I.fromList
+    insert = I.insert
+    delete = I.delete
+    singleton = I.singleton
+    union = I.union
+    intersection = I.intersection
+    difference = I.difference
+    (⊆) = I.isSubsetOf
