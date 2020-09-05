@@ -95,3 +95,27 @@ instance Set I.IntSet where
     intersection = I.intersection
     difference = I.difference
     (⊆) = I.isSubsetOf
+
+newtype Union set = Union { unUnion :: set }
+  deriving (Eq, Ord)
+
+instance Set set => Semigroup (Union set) where
+    Union as <> Union bs = Union (union as bs)
+
+instance Set set => Monoid (Union set) where
+    mempty = Union empty
+
+newtype Intersection set = Intersection { unIntersection :: set }
+  deriving (Eq, Ord)
+
+instance Set set => Semigroup (Intersection set) where
+    Intersection as <> Intersection bs = Intersection (intersection as bs)
+
+newtype SymmetricDifference set = SymmetricDifference { unSymmetricDifference :: set }
+  deriving (Eq, Ord)
+
+instance Set set => Semigroup (SymmetricDifference set) where
+    SymmetricDifference as <> SymmetricDifference bs = SymmetricDifference (symmetricDifference as bs)
+
+instance Set set => Monoid (SymmetricDifference set) where
+    mempty = SymmetricDifference empty
